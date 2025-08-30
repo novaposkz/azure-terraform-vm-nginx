@@ -1,13 +1,13 @@
 # Resource Group
 resource "azurerm_resource_group" "main" {
-  name     = "cmaz-f4p05tns-mod4-rg"
+  name     = var.resource_group_name
   location = var.location
   tags     = var.tags
 }
 
 # Virtual Network
 resource "azurerm_virtual_network" "main" {
-  name                = "cmaz-f4p05tns-mod4-vnet"
+  name                = var.vnet_name
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
@@ -16,7 +16,7 @@ resource "azurerm_virtual_network" "main" {
 
 # Subnet
 resource "azurerm_subnet" "frontend" {
-  name                 = "frontend"
+  name                 = var.subnet_name
   resource_group_name  = azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = ["10.0.1.0/24"]
@@ -24,7 +24,7 @@ resource "azurerm_subnet" "frontend" {
 
 # Network Security Group
 resource "azurerm_network_security_group" "main" {
-  name                = "cmaz-f4p05tns-mod4-nsg"
+  name                = var.nsg_name
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   tags                = var.tags
@@ -103,11 +103,6 @@ resource "azurerm_linux_virtual_machine" "main" {
   network_interface_ids = [
     azurerm_network_interface.main.id,
   ]
-
-  admin_ssh_key {
-    username   = var.admin_username
-    public_key = file("~/.ssh/id_rsa.pub") # или используйте переменную для публичного ключа
-  }
 
   os_disk {
     caching              = "ReadWrite"
