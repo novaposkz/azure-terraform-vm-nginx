@@ -1,4 +1,4 @@
-location              = "westeurope"
+location              = "eastus"
 admin_username        = "adminuser"
 resource_group_name   = "cmaz-f4p05tns-mod4-rg"
 vnet_name             = "cmaz-f4p05tns-mod4-vnet"
