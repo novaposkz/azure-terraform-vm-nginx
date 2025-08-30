@@ -89,3 +89,9 @@ variable "tags" {
     Creator = "tani_bekeshev@epam.com"
   }
 }
+
+variable "ip_configuration_name" {
+  description = "Name of the IP configuration"
+  type        = string
+  default     = "internal"
+}
