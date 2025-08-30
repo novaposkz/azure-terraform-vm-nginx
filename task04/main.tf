@@ -32,7 +32,7 @@ resource "azurerm_network_security_group" "main" {
 
 # NSG Rule for HTTP
 resource "azurerm_network_security_rule" "http" {
-  name                        = "AllowHTTP"
+  name                        = var.http_rule_name
   priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
@@ -47,7 +47,7 @@ resource "azurerm_network_security_rule" "http" {
 
 # NSG Rule for SSH
 resource "azurerm_network_security_rule" "ssh" {
-  name                        = "AllowSSH"
+  name                        = var.ssh_rule_name
   priority                    = 110
   direction                   = "Inbound"
   access                      = "Allow"
@@ -62,17 +62,17 @@ resource "azurerm_network_security_rule" "ssh" {
 
 # Public IP
 resource "azurerm_public_ip" "main" {
-  name                = "cmaz-f4p05tns-mod4-pip"
+  name                = var.public_ip_name
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   allocation_method   = "Static"
-  domain_name_label   = "cmaz-f4p05tns-mod4-nginx"
+  domain_name_label   = var.dns_label
   tags                = var.tags
 }
 
 # Network Interface
 resource "azurerm_network_interface" "main" {
-  name                = "cmaz-f4p05tns-mod4-nic"
+  name                = var.nic_name
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   tags                = var.tags
@@ -93,7 +93,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
 
 # Linux Virtual Machine
 resource "azurerm_linux_virtual_machine" "main" {
-  name                = "cmaz-f4p05tns-mod4-vm"
+  name                = var.vm_name
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   size                = "Standard_F2s_v2"
